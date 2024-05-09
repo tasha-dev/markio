@@ -10,6 +10,7 @@ import {Metadata} from "next";
 import Image from 'next/image';
 import bgLightImage from '@/images/bg-light.jpg';
 import bgDarkImage from '@/images/bg-dark.jpg';
+import TopMenu from "@/components/topMenu";
 
 // Defining fonts
 const fontSans = Inter({
@@ -43,7 +44,10 @@ export default function RootLayout({children}: rootLayoutType):ReactNode {
             }>
                 <Image src={bgLightImage.src} alt={'Background Image'} width={1920} height={1080} className={'fixed top-0 left-0 -z-10 w-screen h-screen object-cover transition-all duration-500 dark:opacity-0 opacity-100'} />
                 <Image src={bgDarkImage.src} alt={'Background Image'} width={1920} height={1080} className={'fixed top-0 left-0 -z-10 w-screen h-screen object-cover transition-all duration-500 dark:opacity-100 opacity-0'} />
-                {children}
+                <div>
+                    <TopMenu />
+                    {children}
+                </div>
             </body>
         </html>
     )
