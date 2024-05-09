@@ -82,6 +82,7 @@
     .editor table thead > tr > :is(th, td) {@apply border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right;}
     .editor ul {@apply my-6 ml-6 list-disc [&>li]:mt-2}
     .editor code {@apply relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold}
+    .editor .ProseMirror:focus {@apply outline-0}
 }
 
 @layer base {
