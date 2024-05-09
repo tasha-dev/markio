@@ -47,7 +47,7 @@ export default function RootLayout({children}: rootLayoutType):ReactNode {
                 <Image src={bgDarkImage.src} alt={'Background Image'} width={1920} height={1080} className={'fixed top-0 left-0 -z-10 w-screen h-screen object-cover transition-all duration-500 dark:opacity-100 opacity-0'} />
                 <div className={'flex flex-col h-screen overflow-hidden'}>
                     <TopMenu />
-                    <div className={'grid grid-cols-4 h-full'}>
+                    <div className={'lg:grid grid-cols-4 h-full'}>
                         <FileMenu />
                         <div className={'backdrop-blur-2xl col-span-3 overflow-auto custom-scroll h-full'}>
                             {children}

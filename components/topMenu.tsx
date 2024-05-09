@@ -15,12 +15,14 @@ import {
     MenubarTrigger,
 } from "@/components/ui/menubar"
 import {Button} from "@/components/ui/button";
-import {Sun, Moon} from "lucide-react";
+import {Sun, Moon, AlignJustify} from "lucide-react";
+import {useFileMenu, useTheme} from "@/app/store";
 
 // Creating and exporting top side menu as default
 export default function TopMenu():ReactNode {
     // Defining states of component
-    const [theme, setTheme] = useState<'dark'|'light'>("dark");
+    const {theme, changeTheme} = useTheme();
+    const {changeOpen} = useFileMenu();
 
     // Using useEffect to add dark/light class names to html element
     useEffect(() => {
@@ -54,7 +56,7 @@ export default function TopMenu():ReactNode {
                 </MenubarContent>
             </MenubarMenu>
             <Button
-                onClick={() => setTheme(prevState => (prevState === 'dark') ? 'light' : 'dark')}
+                onClick={changeTheme}
                 size={'icon'}
                 variant={'ghost'}
                 className={'rounded-none'}
@@ -64,6 +66,14 @@ export default function TopMenu():ReactNode {
                         ? <Sun className={'w-4 h-4'} color={'currentColor'} />
                         : <Moon className={'w-4 h-4'} color={'currentColor'} />
                 }
+            </Button>
+            <Button
+                onClick={changeOpen}
+                size={'icon'}
+                variant={'ghost'}
+                className={'rounded-none lg:hidden flex'}
+            >
+                <AlignJustify className={'w-4 h-4'} color={'currentColor'} />
             </Button>
         </Menubar>
     );
