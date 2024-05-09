@@ -1,6 +1,6 @@
 // Codes by mahdi tasha
 // Importing part
-import "@/app/globals.css"
+import "@/styles/globals.css"
 import {Inter} from "next/font/google"
 import {cn} from "@/lib/utils";
 import {rootLayoutType} from "@/types";
