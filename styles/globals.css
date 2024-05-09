@@ -70,6 +70,18 @@
 
     .custom-scroll::-webkit-scrollbar {@apply bg-transparent w-[10px];}
     .custom-scroll::-webkit-scrollbar-thumb {@apply dark:bg-white/20 bg-black/20 rounded-[50rem] dark:hover:bg-white/50 hover:bg-black/20}
+
+    .editor h1 {@apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;}
+    .editor h2 {@apply scroll-m-20 border-b dark:border-b-white border-b-black pb-2 text-3xl font-semibold tracking-tight first:mt-0;}
+    .editor h3 {@apply scroll-m-20 text-2xl font-semibold tracking-tight;}
+    .editor h4 {@apply scroll-m-20 text-xl font-semibold tracking-tight;}
+    .editor p {@apply leading-7 [&:not(:first-child)]:mt-6;}
+    .editor blockquote {@apply mt-6 border-l-2 pl-6 italic;}
+    .editor table {@apply w-full;}
+    .editor table tr {@apply m-0 border-t p-0 even:bg-muted;}
+    .editor table thead > tr > :is(th, td) {@apply border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right;}
+    .editor ul {@apply my-6 ml-6 list-disc [&>li]:mt-2}
+    .editor code {@apply relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold}
 }
 
 @layer base {

@@ -12,6 +12,7 @@ import bgLightImage from '@/images/bg-light.jpg';
 import bgDarkImage from '@/images/bg-dark.jpg';
 import TopMenu from "@/components/topMenu";
 import FileMenu from "@/components/fileMenu";
+import Tiptap from "@/components/tiptap";
 
 // Defining fonts
 const fontSans = Inter({
@@ -50,7 +51,7 @@ export default function RootLayout({children}: rootLayoutType):ReactNode {
                     <div className={'lg:grid grid-cols-4 h-full'}>
                         <FileMenu />
                         <div className={'backdrop-blur-2xl col-span-3 overflow-auto custom-scroll h-full'}>
-                            {children}
+                            <Tiptap />
                         </div>
                     </div>
                 </div>

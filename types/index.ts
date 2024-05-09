@@ -10,3 +10,8 @@ export interface fileType {
     active?: boolean;
 }
 
+export interface containerType {
+    size?: 'sm' | 'lg';
+    children: ReactNode;
+    className?: string;
+}
