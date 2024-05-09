@@ -67,6 +67,9 @@
         --input: 217.2 32.6% 17.5%;
         --ring: 212.7 26.8% 83.9%;
     }
+
+    .custom-scroll::-webkit-scrollbar {@apply bg-transparent w-[10px];}
+    .custom-scroll::-webkit-scrollbar-thumb {@apply dark:bg-white/20 bg-black/20 rounded-[50rem] dark:hover:bg-white/50 hover:bg-black/20}
 }
 
 @layer base {
