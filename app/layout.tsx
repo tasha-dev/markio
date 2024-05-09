@@ -44,9 +44,14 @@ export default function RootLayout({children}: rootLayoutType):ReactNode {
             }>
                 <Image src={bgLightImage.src} alt={'Background Image'} width={1920} height={1080} className={'fixed top-0 left-0 -z-10 w-screen h-screen object-cover transition-all duration-500 dark:opacity-0 opacity-100'} />
                 <Image src={bgDarkImage.src} alt={'Background Image'} width={1920} height={1080} className={'fixed top-0 left-0 -z-10 w-screen h-screen object-cover transition-all duration-500 dark:opacity-100 opacity-0'} />
-                <div>
+                <div className={'flex flex-col h-screen'}>
                     <TopMenu />
-                    {children}
+                    <div className={'grid grid-cols-4 h-full'}>
+                        <div className={'backdrop-blur-2xl'} />
+                        <div className={'backdrop-blur-2xl col-span-3'}>
+                            {children}
+                        </div>
+                    </div>
                 </div>
             </body>
         </html>

@@ -17,7 +17,7 @@ import {
 export default function TopMenu():ReactNode {
     // Returning JSX
     return (
-        <Menubar>
+        <Menubar className={'shrink-0'}>
             <MenubarMenu>
                 <MenubarTrigger>Auth</MenubarTrigger>
                 <MenubarContent>
