@@ -1,8 +1,8 @@
 // Codes by mahdi tasha
 // Importing part
-import "@/styles/globals.css"
+import "@/app/globals.css"
 import {Inter} from "next/font/google"
-import {cn} from "../lib/utils";
+import {cn} from "@/lib/utils";
 import {rootLayoutType} from "@/types";
 import {ReactNode} from "react";
 import {siteConfig} from "@/configs";
