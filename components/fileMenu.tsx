@@ -34,8 +34,11 @@ export default function FileMenu():ReactNode {
             >
                 {
                     (files.length === 0)
-                        ? <h1 className={'text-[20px] font-medium dark:text-white text-black'}>There is nothing to show</h1>
-                        : <ul className={'flex flex-col'}>
+                        ? (
+                            <div className={'p-[20px]'}>
+                                <h1 className={'text-[20px] font-medium dark:text-white text-black text-center'}>There is nothing to show</h1>
+                            </div>
+                        ) : <ul className={'flex flex-col'}>
                             {
                                 files.map((item ,index) => (
                                     <File

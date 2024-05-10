@@ -94,49 +94,7 @@ export const useFiles = create<FilesStore>((set, get) => ({
                 <a href="https://tasha.vercel.app/">Portfolio</a>
             </p>
         `
-    }, {
-        name: 'asdsad',
-        content: '<h1>asd</h1>'
-    },{
-        name: 'asdsad',
-        content: '<h1>asd</h1>'
-    },{
-        name: 'asdsad',
-        content: '<h1>asd</h1>'
-    },{
-        name: 'asdsad',
-        content: '<h1>asd</h1>'
-    },{
-        name: 'asdsad',
-        content: '<h1>asd</h1>'
-    },{
-        name: 'asdsad',
-        content: '<h1>asd</h1>'
-    },{
-        name: 'asdsad',
-        content: '<h1>asd</h1>'
-    },{
-        name: 'asdsad',
-        content: '<h1>asd</h1>'
-    },{
-        name: 'asdsad',
-        content: '<h1>asd</h1>'
-    },{
-        name: 'asdsad',
-        content: '<h1>asd</h1>'
-    },{
-        name: 'asdsad',
-        content: '<h1>asd</h1>'
-    },{
-        name: 'asdsad',
-        content: '<h1>asd</h1>'
-    },{
-        name: 'asdsad',
-        content: '<h1>asd</h1>'
-    },{
-        name: 'asdsad',
-        content: '<h1>asd</h1>'
-    },],
+    }],
 
     add: (name, content) => {
         const newFile: File = {name, content};
