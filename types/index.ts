@@ -15,3 +15,8 @@ export interface containerType {
     children: ReactNode;
     className?: string;
 }
+
+export interface hoverDropDownType {
+    children: ReactNode;
+    icon: ReactNode;
+}
