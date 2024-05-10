@@ -6,10 +6,13 @@
 import {ReactNode} from "react";
 import {BubbleMenu, EditorContent, useEditor} from "@tiptap/react";
 import {StarterKit} from "@tiptap/starter-kit";
+import {Link} from "@tiptap/extension-link";
 import Container from "@/components/ui/container";
 import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group";
 import {Separator} from "@/components/ui/separator";
 import HoverDropDown from "@/components/ui/hoverDropdown";
+import {Button} from "@/components/ui/button";
+import {useFileMenu, useFiles} from "@/app/store";
 import {
     Bold,
     Italic,
@@ -21,14 +24,21 @@ import {
     AlignJustify,
     List, CodeXml,
 } from "lucide-react";
-import {Button} from "@/components/ui/button";
 
 // Creating and exporting tiptap component (editor) as default
 export default function Tiptap():ReactNode {
+    // Getting data from zustand
+    const {activeFile} = useFileMenu();
+    const {files, setContent} = useFiles();
+
     // Defining editor
     const editor = useEditor({
-        extensions: [StarterKit,],
-        content: '',
+        extensions: [
+            StarterKit,
+            Link
+        ],
+        content: files.find((item) => item.name === activeFile)?.content,
+        onUpdate: (e) => (editor?.getHTML()) ? setContent(activeFile, editor.getHTML()) : setContent(activeFile, '')
     })
 
     // Returning JSX

@@ -46,11 +46,11 @@ export default function RootLayout({children}: rootLayoutType):ReactNode {
             }>
                 <Image src={bgLightImage.src} alt={'Background Image'} width={1920} height={1080} className={'fixed top-0 left-0 -z-10 w-screen h-screen object-cover transition-all duration-500 dark:opacity-0 opacity-100'} />
                 <Image src={bgDarkImage.src} alt={'Background Image'} width={1920} height={1080} className={'fixed top-0 left-0 -z-10 w-screen h-screen object-cover transition-all duration-500 dark:opacity-100 opacity-0'} />
-                <div className={'flex flex-col h-screen overflow-hidden'}>
+                <div className={'flex flex-col overflow-hidden h-dvh'}>
                     <TopMenu />
-                    <div className={'lg:grid grid-cols-4 h-full'}>
+                    <div className={'lg:grid grid-cols-4 h-screen'}>
                         <FileMenu />
-                        <div className={'backdrop-blur-2xl col-span-3 overflow-auto custom-scroll h-full'}>
+                        <div className={'backdrop-blur-2xl col-span-3 overflow-auto custom-scroll h-[93.5dvh]'}>
                             <Tiptap />
                         </div>
                     </div>
