@@ -55,38 +55,43 @@ export default function File({name, active = false}:fileType):ReactNode {
                 <FileIcon className={'w-4 h-4'} color={'currentColor'} />
                 <span className={"text-sm text-start font-medium w-full leading-none truncate text-current"}>{name}</span>
             </button>
-            <div className={'flex shrink-0'}>
-                <button
-                    onClick={() => remove(name)}
-                    className={'h-[36px] w-[36px] aspect-square flex items-center justify-center transition-all duration-500 bg-transparent text-red-600 hover:bg-red-600 hover:text-white'}
-                >
-                    <X className={'w-4 h-4'}/>
-                </button>
-                <Popover>
-                    <PopoverTrigger asChild>
-                        <button
-                            className={'h-[36px] w-[36px] aspect-square flex items-center justify-center transition-all duration-500 dark:text-white text-black dark:hover:bg-white/20 hover:bg-black/20'}
-                        >
-                            <Pencil className={'w-4 h-4'}/>
-                        </button>
-                    </PopoverTrigger>
-                    <PopoverContent>
-                        <Form {...form}>
-                            <form action="#" onSubmit={form.handleSubmit(onSubmitHandler)}>
-                                <FormField control={form.control} name={'fileName'} render={({field}) => (
-                                    <FormItem>
-                                        <FormLabel>New File Name</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder={"Without .md extension at end"} {...field} />
-                                        </FormControl>
-                                    </FormItem>
-                                )}/>
-                                <Button type={'submit'} className={'w-full mt-[20px]'}>Create</Button>
-                            </form>
-                        </Form>
-                    </PopoverContent>
-                </Popover>
-            </div>
+            {
+                (name.toLowerCase() !== 'welcome')
+                    ? (
+                        <div className={'flex shrink-0'}>
+                            <button
+                                onClick={() => remove(name)}
+                                className={'h-[36px] w-[36px] aspect-square flex items-center justify-center transition-all duration-500 bg-transparent text-red-600 hover:bg-red-600 hover:text-white'}
+                            >
+                                <X className={'w-4 h-4'}/>
+                            </button>
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <button
+                                        className={'h-[36px] w-[36px] aspect-square flex items-center justify-center transition-all duration-500 dark:text-white text-black dark:hover:bg-white/20 hover:bg-black/20'}
+                                    >
+                                        <Pencil className={'w-4 h-4'}/>
+                                    </button>
+                                </PopoverTrigger>
+                                <PopoverContent>
+                                    <Form {...form}>
+                                        <form action="#" onSubmit={form.handleSubmit(onSubmitHandler)}>
+                                            <FormField control={form.control} name={'fileName'} render={({field}) => (
+                                                <FormItem>
+                                                    <FormLabel>New File Name</FormLabel>
+                                                    <FormControl>
+                                                        <Input placeholder={"Without .md extension at end"} {...field} />
+                                                    </FormControl>
+                                                </FormItem>
+                                            )}/>
+                                            <Button type={'submit'} className={'w-full mt-[20px]'}>Create</Button>
+                                        </form>
+                                    </Form>
+                                </PopoverContent>
+                            </Popover>
+                        </div>
+                    ) : false
+            }
         </li>
     );
 }

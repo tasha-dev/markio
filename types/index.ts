@@ -4,6 +4,7 @@ import {ReactNode} from "react";
 
 // Defining type of components and exporting them
 export interface rootLayoutType {children: ReactNode;}
+export interface tiptapType {isOpened: boolean;}
 export interface fileType {
     name: string;
     content: string;

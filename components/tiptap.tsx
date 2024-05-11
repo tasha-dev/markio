@@ -24,9 +24,11 @@ import {
     AlignJustify,
     List, CodeXml,
 } from "lucide-react";
+import {tiptapType} from "@/types";
+import {cn} from "@/lib/utils";
 
 // Creating and exporting tiptap component (editor) as default
-export default function Tiptap():ReactNode {
+export default function Tiptap({isOpened}:tiptapType):ReactNode {
     // Getting data from zustand
     const {activeFile} = useFileMenu();
     const {files, setContent} = useFiles();
@@ -43,7 +45,10 @@ export default function Tiptap():ReactNode {
 
     // Returning JSX
     return (
-        <Container className={'editor'}>
+        <Container className={cn(
+            'editor',
+            (isOpened) ? 'block' : 'hidden'
+        )}>
             {
                 editor && (
                     <BubbleMenu className={'dark:bg-black bg-white rounded-lg p-[5px] border dark:border-white/20 border-black/20'} editor={editor} tippyOptions={{ duration: 500 }}>
