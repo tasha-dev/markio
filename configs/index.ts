@@ -6,3 +6,12 @@ export const siteConfig = {
     name: 'Markio: Efficient Note-Taking App'
 }
 
+export const firebaseConfig = {
+    apiKey: "AIzaSyAhxo4txuvxXVMI6hjCvg4ciACn8-Cszww",
+    authDomain: "markio-2b121.firebaseapp.com",
+    projectId: "markio-2b121",
+    storageBucket: "markio-2b121.appspot.com",
+    messagingSenderId: "738193902877",
+    appId: "1:738193902877:web:c0026b355797a75451a5f4",
+    measurementId: "G-SM5JBVHLNL"
+};

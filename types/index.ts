@@ -9,6 +9,7 @@ export interface fileType {
     name: string;
     content: string;
     active?: boolean;
+    dbID?: string;
 }
 
 export interface containerType {

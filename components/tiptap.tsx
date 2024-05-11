@@ -51,7 +51,14 @@ export default function Tiptap({isOpened}:tiptapType):ReactNode {
         ],
         editable: (activeFile.toLowerCase() !== 'welcome'),
         content: files.find((item) => item.name === activeFile)?.content,
-        onUpdate: (e) => (editor?.getHTML()) ? setContent(activeFile, editor.getHTML()) : setContent(activeFile, '')
+        onUpdate: (e) => {
+            const content = editor?.getHTML();
+            if (content) {
+                setContent(activeFile, content);
+            } else {
+                setContent(activeFile, '')
+            }
+        }
     })
 
     // Conditional rendering

@@ -15,13 +15,16 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import z from "zod";
 import {toast} from "sonner";
 import {zodResolver} from "@hookform/resolvers/zod";
+import useFirebase from "@/hooks/useFirebase";
+import useUser from "@/hooks/useUser";
+import {getDatabase, ref, set} from "firebase/database";
 
 // Defining schema for file rename form and type of it
 const formSchema = z.object({fileName: z.string().min(3).max(20)})
 type formType = z.infer<typeof formSchema>
 
 // Creating and exporting file component as default
-export default function File({name, active = false}:fileType):ReactNode {
+export default function File({name, active = false, dbID}:fileType):ReactNode {
     // Defining react hook form
     const form = useForm<formType>({resolver: zodResolver(formSchema)})
 
@@ -29,16 +32,36 @@ export default function File({name, active = false}:fileType):ReactNode {
     const {changeActive} = useFileMenu();
     const {remove, rename, files} = useFiles()
 
+    // Defining firebase
+    const app = useFirebase();
+    const user = useUser();
+
     // Defining a function to handle submit of rename file form
     const onSubmitHandler:SubmitHandler<formType> = ({fileName}) => {
-        if (files.map(item => item.name).includes(fileName)) {
-            form.setError('fileName', {
-                message: 'The file name already exists',
-            });
+        if (user.user) {
+            if (files.map(item => item.name).includes(fileName)) {
+                form.setError('fileName', {
+                    message: 'The file name already exists',
+                });
+            } else {
+                const db = getDatabase();
+                const dbRef = ref(db, `/${user.user.uid}/${dbID}/name`);
+
+                set(dbRef, fileName);
+                rename(name, fileName);
+                changeActive(fileName);
+                toast('The file name is changed');
+            }
         } else {
-            rename(name, fileName);
-            changeActive(fileName);
-            toast('The file name is changed');
+            if (files.map(item => item.name).includes(fileName)) {
+                form.setError('fileName', {
+                    message: 'The file name already exists',
+                });
+            } else {
+                rename(name, fileName);
+                changeActive(fileName);
+                toast('The file name is changed');
+            }
         }
     }
 
@@ -60,7 +83,17 @@ export default function File({name, active = false}:fileType):ReactNode {
                     ? (
                         <div className={'flex shrink-0'}>
                             <button
-                                onClick={() => remove(name)}
+                                onClick={() => {
+                                    if (!user.user) {
+                                        remove(name)
+                                    } else {
+                                        const db = getDatabase();
+                                        const dbRef = ref(db, `/${user.user.uid}/${dbID}`);
+
+                                        remove(name);
+                                        set(dbRef, {})
+                                    }
+                                }}
                                 className={'h-[36px] w-[36px] aspect-square flex items-center justify-center transition-all duration-500 bg-transparent text-red-600 hover:bg-red-600 hover:text-white'}
                             >
                                 <X className={'w-4 h-4'}/>

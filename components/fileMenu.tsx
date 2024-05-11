@@ -8,7 +8,7 @@ import File from "@/components/ui/file";
 import {useFileMenu, useFiles} from "@/app/store";
 import {cn} from "@/lib/utils";
 import {Button} from '@/components/ui/button';
-import {Plus} from 'lucide-react';
+import {LoaderCircle, Plus} from 'lucide-react';
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import z from 'zod';
 import {SubmitHandler, useForm} from "react-hook-form";
@@ -16,6 +16,10 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {Form, FormControl, FormField, FormItem, FormLabel} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import {toast} from "sonner";
+import useFirebase from "@/hooks/useFirebase";
+import useUser from "@/hooks/useUser";
+import {getDatabase, push, ref} from "firebase/database";
+import useFirebaseFiles from "@/hooks/useFirebaseFiles";
 
 // Defining schema for new file form and type of it
 const formSchema = z.object({fileName: z.string().min(3).max(20)})
@@ -32,22 +36,47 @@ export default function FileMenu():ReactNode {
     // Getting data of files from zustand
     const {files, add} = useFiles();
 
+    // Defining firebase
+    const app = useFirebase();
+    const user = useUser();
+    const firebaseFiles = useFirebaseFiles();
+
     // Defining a function to handle submit of new file form
     const onSubmitHandler:SubmitHandler<formType> = ({fileName}) => {
-        if (files.map(item => item.name).includes(fileName)) {
-            form.setError('fileName', {
-                message: 'The file name already exists',
-            });
+        if (!user.user) {
+            if (files.map(item => item.name).includes(fileName)) {
+                form.setError('fileName', {
+                    message: 'The file name already exists',
+                });
+            } else {
+                add(fileName, `<h1>${fileName}</h1>`);
+                changeActive(fileName);
+                toast('The file is added');
+            }
         } else {
-            add(fileName, `<h1>${fileName}</h1>`);
-            changeActive(fileName);
-            toast('The file is added');
+            if (files.map(item => item.name).includes(fileName)) {
+                form.setError('fileName', {
+                    message: 'The file name already exists',
+                });
+            } else {
+                const db = getDatabase();
+                const dbRef = ref(db, `/${user.user.uid}`);
+
+                push(dbRef, {
+                    name: fileName,
+                    content: `<h1>${fileName}</h1>`
+                })
+
+                add(fileName, `<h1>${fileName}</h1>`);
+                changeActive(fileName);
+                toast('The file is added');
+            }
         }
     }
 
     // Returning JSX
     return (
-        <div className={'h-full overflow-hidden flex flex-col'}>
+        <div className={'lg:h-full overflow-hidden flex flex-col'}>
             <div
                 data-opened={opened}
                 onClick={changeOpen}
@@ -86,23 +115,49 @@ export default function FileMenu():ReactNode {
                     </PopoverContent>
                 </Popover>
                 {
-                    (files.length === 0)
+                    (user.loading || firebaseFiles.loading)
                         ? (
-                            <div className={'p-[20px]'}>
-                                <h1 className={'text-[20px] font-medium dark:text-white text-black text-center'}>There is nothing to show</h1>
+                            <div className={'flex items-center justify-center'}>
+                                <LoaderCircle className={'w-10 h-10 animate-spin'} color={'currentColor'}/>
                             </div>
-                        ) : <ul className={'flex flex-col'}>
-                            {
-                                files.map((item ,index) => (
-                                    <File
-                                        key={index}
-                                        name={item.name}
-                                        content={item.content}
-                                        active={item.name === activeFile}
-                                    />
-                                ))
-                            }
-                        </ul>
+                        ) : (user.user)
+                            ? (firebaseFiles.files.length === 0)
+                                ? (
+                                    <div className={'p-[20px]'}>
+                                        <h1 className={'text-[20px] font-medium dark:text-white text-black text-center'}>There is nothing to show</h1>
+                                    </div>
+                                ) : (
+                                    <ul className={'flex flex-col'}>
+                                        {
+                                            Object.values(firebaseFiles.files).map((item ,index) => (
+                                                <File
+                                                    dbID={Object.keys(firebaseFiles.files)[index]}
+                                                    key={index}
+                                                    name={item.name}
+                                                    content={item.content}
+                                                    active={item.name === activeFile}
+                                                />
+                                            ))
+                                        }
+                                    </ul>
+                                )
+                            : (files.length === 0)
+                                ? (
+                                    <div className={'p-[20px]'}>
+                                        <h1 className={'text-[20px] font-medium dark:text-white text-black text-center'}>There is nothing to show</h1>
+                                    </div>
+                                ) : <ul className={'flex flex-col'}>
+                                    {
+                                        files.map((item ,index) => (
+                                            <File
+                                                key={index}
+                                                name={item.name}
+                                                content={item.content}
+                                                active={item.name === activeFile}
+                                            />
+                                        ))
+                                    }
+                                </ul>
                 }
             </div>
         </div>
