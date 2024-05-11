@@ -12,8 +12,8 @@ export default function HoverDropDown({icon, children}:hoverDropDownType):ReactN
             <Button size={'icon'} variant={'ghost'}>
                 {icon}
             </Button>
-            <div className={'pt-[20px] absolute top-full left-0'}>
-                <div className={'invisible opacity-0 group-hover:opacity-100 p-2 dark:bg-black bg-white rounded-md group-hover:visible transition-all duration-500 w-[200px]'}>
+            <div className={'pt-[20px] absolute top-full left-0 invisible transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:visible'}>
+                <div className={'p-2 dark:bg-black bg-white rounded-md w-[200px]'}>
                     {children}
                 </div>
             </div>

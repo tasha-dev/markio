@@ -20,7 +20,7 @@
     "@radix-ui/react-toggle-group": "^1.0.4",
     "@tiptap/extension-bubble-menu": "^2.3.2",
     "@tiptap/extension-character-count": "^2.3.2",
-    "@tiptap/extension-history": "^2.3.2",
+    "@tiptap/extension-dropcursor": "^2.3.2",
     "@tiptap/extension-link": "^2.3.2",
     "@tiptap/extension-placeholder": "^2.3.2",
     "@tiptap/pm": "^2.3.2",

@@ -86,6 +86,21 @@
     .editor ol {@apply list-decimal}
     .editor code {@apply relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold}
     .editor .ProseMirror:focus {@apply outline-0}
+
+    :is(.dark .editor .is-editor-empty:first-child::before, .dark .editor .character-count) {color: rgba(256,256,256,.5);}
+
+    .editor .character-count {
+        color: rgba(0,0,0,.5);
+        margin-top: 1rem;
+    }
+
+    .editor .is-editor-empty:first-child::before {
+        color: rgba(0,0,0,.5);
+        content: attr(data-placeholder);
+        float: left;
+        height: 0;
+        pointer-events: none;
+    }
 }
 
 @layer base {
