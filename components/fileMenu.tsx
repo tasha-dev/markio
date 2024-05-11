@@ -47,7 +47,7 @@ export default function FileMenu():ReactNode {
 
     // Returning JSX
     return (
-        <div>
+        <div className={'h-full overflow-hidden flex flex-col'}>
             <div
                 data-opened={opened}
                 onClick={changeOpen}
@@ -58,7 +58,7 @@ export default function FileMenu():ReactNode {
                     (opened)
                         ? 'left-0 opacity-100 visible'
                         : 'left-[-75%] lg:opacity-100 opacity-0 lg:visible invisible',
-                    'lg:backdrop-blur-2xl lg:dark:bg-black/20 lg:bg-white/20 dark:bg-black bg-white h-full lg:border-r lg:dark:border-r-white/20 lg:border-r-black/20 overflow-auto lg:static fixed top-0 lg:z-0 z-50 transition-all duration-500 lg:w-auto w-[75%]'
+                    'lg:backdrop-blur-2xl lg:dark:bg-black/20 lg:bg-white/20 dark:bg-black bg-white h-full lg:border-r lg:dark:border-r-white/20 lg:border-r-black/20 overflow-auto custom-scroll lg:static fixed top-0 lg:z-0 z-50 transition-all duration-500 lg:w-auto w-[75%]'
                 )}
             >
                 <Popover>
@@ -89,7 +89,7 @@ export default function FileMenu():ReactNode {
                     (files.length === 0)
                         ? (
                             <div className={'p-[20px]'}>
-                            <h1 className={'text-[20px] font-medium dark:text-white text-black text-center'}>There is nothing to show</h1>
+                                <h1 className={'text-[20px] font-medium dark:text-white text-black text-center'}>There is nothing to show</h1>
                             </div>
                         ) : <ul className={'flex flex-col'}>
                             {
