@@ -15,17 +15,6 @@ type fileMenuStoreType = {
     changeActive: (name:string) => void;
 }
 
-type fileStoreType = {
-    add: () => void;
-    remove: () => void;
-    files: {
-        name: string;
-        content: string;
-        setContent: (name: string, content: string) => void;
-        setName: () => void;
-    }[];
-}
-
 type File = {
     name: string;
     content: string;

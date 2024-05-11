@@ -3,20 +3,17 @@
 'use client';
 
 // Importing part
-import {ReactNode, useEffect, useState} from "react";
+import {ReactNode, useEffect} from "react";
 import {
     Menubar,
     MenubarContent,
     MenubarItem,
     MenubarMenu,
-    MenubarSub,
-    MenubarSubContent,
-    MenubarSubTrigger,
     MenubarTrigger,
 } from "@/components/ui/menubar"
 import {Button} from "@/components/ui/button";
 import {Sun, Moon, AlignJustify} from "lucide-react";
-import {useFileMenu, useTheme} from "@/app/store";
+import {useFileMenu, useFiles, useTheme} from "@/app/store";
 
 // Creating and exporting top side menu as default
 export default function TopMenu():ReactNode {
@@ -36,24 +33,7 @@ export default function TopMenu():ReactNode {
     return (
         <Menubar className={'shrink-0'}>
             <MenubarMenu>
-                <MenubarTrigger>Auth</MenubarTrigger>
-                <MenubarContent>
-                    <MenubarItem>Login</MenubarItem>
-                    <MenubarItem>Sign up</MenubarItem>
-                </MenubarContent>
-            </MenubarMenu>
-            <MenubarMenu>
-                <MenubarTrigger>Use</MenubarTrigger>
-                <MenubarContent>
-                    <MenubarSub>
-                        <MenubarSubTrigger>Export</MenubarSubTrigger>
-                        <MenubarSubContent>
-                            <MenubarItem>To .pdf</MenubarItem>
-                            <MenubarItem>To .md</MenubarItem>
-                        </MenubarSubContent>
-                    </MenubarSub>
-                    <MenubarItem>Publish to github</MenubarItem>
-                </MenubarContent>
+                <MenubarTrigger onClick={() => alert('asd')}>Auth</MenubarTrigger>
             </MenubarMenu>
             <Button
                 onClick={changeTheme}
