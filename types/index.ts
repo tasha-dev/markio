@@ -1,6 +1,7 @@
 // Codes by mahdi tasha
 // Importing part
 import {ReactNode} from "react";
+import {User} from 'firebase/auth';
 
 // Defining type of components and exporting them
 export interface rootLayoutType {children: ReactNode;}
@@ -20,4 +21,11 @@ export interface containerType {
 export interface hoverDropDownType {
     children: ReactNode;
     icon: ReactNode;
+}
+
+export interface topMenuType {
+    user: {
+        loading: boolean;
+        user: User | null;
+    }
 }
