@@ -72,9 +72,9 @@ export default function TopMenu():ReactNode {
                     <DialogTrigger>
                         <Button variant={'ghost'} className={'h-[2rem]'}>Auth</Button>
                     </DialogTrigger>
-                    <DialogContent>
-                        <Tabs defaultValue="account" className="w-[400px]">
-                            <TabsList className="grid w-full grid-cols-2">
+                    <DialogContent className={'lg:max-w-lg max-w-full lg:h-auto h-dvh lg:overflow-hidden overflow-auto lg:rounded-md rounded-0 lg:border border-0'}>
+                        <Tabs defaultValue="account" className="lg:w-[400px] w-full">
+                            <TabsList className="grid w-full lg:grid-cols-2 grid-cols-1 lg:h-[40px] h-auto">
                                 <TabsTrigger value="sign-in">Sign in</TabsTrigger>
                                 <TabsTrigger value="sign-up">Sign up</TabsTrigger>
                             </TabsList>
