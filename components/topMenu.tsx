@@ -59,6 +59,7 @@ export default function TopMenu({user}:topMenuType):ReactNode {
     const loginFormSubmit:SubmitHandler<loginFormType> = async ({email, password}) => {
         const auth = getAuth();
         await signInWithEmailAndPassword(auth, email, password)
+            .then(() => window.location.reload())
             .catch(() => loginForm.setError('root', {message: 'There was an error while logging in. Please try again'}))
     }
 
@@ -70,6 +71,7 @@ export default function TopMenu({user}:topMenuType):ReactNode {
         } else {
             const auth = getAuth();
             await createUserWithEmailAndPassword(auth, email, password)
+                .then(() => window.location.reload())
                 .catch(() => loginForm.setError('root', {message: 'There was an error while creating new user. Please try again'}))
         }
     }
@@ -84,7 +86,12 @@ export default function TopMenu({user}:topMenuType):ReactNode {
                             <LoaderCircle className={'w-4 h-4 animate-spin'} />
                         </div>
                     ) : (user.user)
-                        ? <Button className={'h-[2rem]'} variant={'destructive'} onClick={() => getAuth().signOut()}>Log out</Button>
+                        ? <Button className={'h-[2rem]'} variant={'destructive'} onClick={() => {
+                            const auth = getAuth();
+
+                            auth.signOut();
+                            window.location.reload();
+                        }}>Log out</Button>
                         : (
                             <MenubarMenu>
                                 <Dialog modal>

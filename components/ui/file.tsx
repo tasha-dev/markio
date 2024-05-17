@@ -77,7 +77,19 @@ export default function File({name, user, active = false, index}:fileType):React
                     ? (
                         <div className={'flex shrink-0'}>
                             <button
-                                onClick={() => remove(name)}
+                                onClick={() => {
+                                    remove(name);
+
+                                    if (user.user) {
+                                        const firebaseNames = Object.keys(firebaseFiles);
+                                        const firebaseName = firebaseNames[index];
+
+                                        const db = getDatabase();
+                                        const dbRef = ref(db, `/${user.user.uid}/${firebaseName}`);
+
+                                        set(dbRef, {});
+                                    }
+                                }}
                                 className={'h-[36px] w-[36px] aspect-square flex items-center justify-center transition-all duration-500 bg-transparent text-red-600 hover:bg-red-600 hover:text-white'}
                             >
                                 <X className={'w-4 h-4'}/>
