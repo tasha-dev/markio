@@ -27,6 +27,7 @@ type FilesStore = {
     remove: (name: string) => void;
     setContent: (name: string, content: string) => void;
     rename: (prevName: string, newName: string) => void;
+    setFiles: (files:File[]) => void;
 };
 
 // Defining states
@@ -109,4 +110,10 @@ export const useFiles = create<FilesStore>((set, get) => ({
             )
         }));
     },
+
+    setFiles: (files) => {
+        set(() => ({
+            files: files
+        }))
+    }
 }));

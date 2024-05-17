@@ -47,7 +47,7 @@ export default function FileMenu():ReactNode {
 
     // Returning JSX
     return (
-        <div className={'h-full overflow-hidden flex flex-col'}>
+        <div className={'lg:h-full overflow-hidden flex flex-col'}>
             <div
                 data-opened={opened}
                 onClick={changeOpen}
