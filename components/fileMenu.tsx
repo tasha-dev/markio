@@ -8,7 +8,7 @@ import File from "@/components/ui/file";
 import {useFileMenu, useFiles} from "@/app/store";
 import {cn} from "@/lib/utils";
 import {Button} from '@/components/ui/button';
-import {Plus} from 'lucide-react';
+import {LoaderCircle, Plus} from 'lucide-react';
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import z from 'zod';
 import {SubmitHandler, useForm} from "react-hook-form";
@@ -16,13 +16,16 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {Form, FormControl, FormField, FormItem, FormLabel} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import {toast} from "sonner";
+import {fileMenuType} from "@/types";
+import {getDatabase, push, ref} from "@firebase/database";
+import useFirebase from "@/hook/useFirebase";
 
 // Defining schema for new file form and type of it
 const formSchema = z.object({fileName: z.string().min(3).max(20)})
 type formType = z.infer<typeof formSchema>
 
 // Creating and exporting file menu component as default
-export default function FileMenu():ReactNode {
+export default function FileMenu({user}:fileMenuType):ReactNode {
     // Defining react hook form
     const form = useForm<formType>({resolver: zodResolver(formSchema)})
 
@@ -31,6 +34,9 @@ export default function FileMenu():ReactNode {
 
     // Getting data of files from zustand
     const {files, add} = useFiles();
+
+    // Defining firebase
+    const firebase = useFirebase();
 
     // Defining a function to handle submit of new file form
     const onSubmitHandler:SubmitHandler<formType> = ({fileName}) => {
@@ -42,6 +48,16 @@ export default function FileMenu():ReactNode {
             add(fileName, `<h1>${fileName}</h1>`);
             changeActive(fileName);
             toast('The file is added');
+
+            if (user.user) {
+                const db = getDatabase();
+                const dbRef = ref(db, `/${user.user.uid}`);
+
+                push(dbRef, {
+                    name: fileName,
+                    content: `<h1>${fileName}</h1>`
+                })
+            }
         }
     }
 
@@ -61,48 +77,61 @@ export default function FileMenu():ReactNode {
                     'lg:backdrop-blur-2xl lg:dark:bg-black/20 lg:bg-white/20 dark:bg-black bg-white h-full lg:border-r lg:dark:border-r-white/20 lg:border-r-black/20 overflow-auto custom-scroll lg:static fixed top-0 lg:z-0 z-50 transition-all duration-500 lg:w-auto w-[75%]'
                 )}
             >
-                <Popover>
-                    <PopoverTrigger asChild>
-                        <div className={'p-1'}>
-                            <Button size={'icon'} variant={'ghost'}>
-                                <Plus className={'w-4 h-4'}/>
-                            </Button>
-                        </div>
-                    </PopoverTrigger>
-                    <PopoverContent>
-                        <Form {...form}>
-                            <form action="#" onSubmit={form.handleSubmit(onSubmitHandler)}>
-                                <FormField control={form.control} name={'fileName'} render={({field}) => (
-                                    <FormItem>
-                                        <FormLabel>File Name</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder={"Without .md extension at end"} {...field} />
-                                        </FormControl>
-                                    </FormItem>
-                                )}/>
-                                <Button type={'submit'} className={'w-full mt-[20px]'}>Create</Button>
-                            </form>
-                        </Form>
-                    </PopoverContent>
-                </Popover>
                 {
-                    (files.length === 0)
+                    (user.loading)
                         ? (
-                            <div className={'p-[20px]'}>
-                                <h1 className={'text-[20px] font-medium dark:text-white text-black text-center'}>There is nothing to show</h1>
-                            </div>
-                        ) : <ul className={'flex flex-col'}>
-                            {
-                                files.map((item ,index) => (
-                                    <File
-                                        key={index}
-                                        name={item.name}
-                                        content={item.content}
-                                        active={item.name === activeFile}
-                                    />
-                                ))
-                            }
-                        </ul>
+                          <div className={'flex items-center justify-center my-[20px]'}>
+                              <LoaderCircle className={'w-10 h-10 animate-spin'} />
+                          </div>
+                        ) : (
+                            <>
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <div className={'p-1'}>
+                                            <Button size={'icon'} variant={'ghost'}>
+                                                <Plus className={'w-4 h-4'}/>
+                                            </Button>
+                                        </div>
+                                    </PopoverTrigger>
+                                    <PopoverContent>
+                                        <Form {...form}>
+                                            <form action="#" onSubmit={form.handleSubmit(onSubmitHandler)}>
+                                                <FormField control={form.control} name={'fileName'} render={({field}) => (
+                                                    <FormItem>
+                                                        <FormLabel>File Name</FormLabel>
+                                                        <FormControl>
+                                                            <Input placeholder={"Without .md extension at end"} {...field} />
+                                                        </FormControl>
+                                                    </FormItem>
+                                                )}/>
+                                                <Button type={'submit'} className={'w-full mt-[20px]'}>Create</Button>
+                                            </form>
+                                        </Form>
+                                    </PopoverContent>
+                                </Popover>
+                                {
+                                    (files.length === 0)
+                                        ? (
+                                            <div className={'p-[20px]'}>
+                                                <h1 className={'text-[20px] font-medium dark:text-white text-black text-center'}>There is nothing to show</h1>
+                                            </div>
+                                        ) : <ul className={'flex flex-col'}>
+                                            {
+                                                files.map((item ,index) => (
+                                                    <File
+                                                        user={user}
+                                                        index={index}
+                                                        key={index}
+                                                        name={item.name}
+                                                        content={item.content}
+                                                        active={item.name === activeFile}
+                                                    />
+                                                ))
+                                            }
+                                        </ul>
+                                }
+                            </>
+                        )
                 }
             </div>
         </div>

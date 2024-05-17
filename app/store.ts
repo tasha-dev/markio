@@ -20,7 +20,7 @@ type File = {
     content: string;
 };
 
-// Define the type for the useFiles store
+// Define the type for the useFirebaseFiles store
 type FilesStore = {
     files: File[];
     add: (name: string, content: string) => void;

@@ -15,19 +15,26 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import z from "zod";
 import {toast} from "sonner";
 import {zodResolver} from "@hookform/resolvers/zod";
+import useFirebase from "@/hook/useFirebase";
+import useFirebaseFiles from "@/hook/useFirebaseFiles";
+import {getDatabase, ref, set} from "@firebase/database";
 
 // Defining schema for file rename form and type of it
 const formSchema = z.object({fileName: z.string().min(3).max(20)})
 type formType = z.infer<typeof formSchema>
 
 // Creating and exporting file component as default
-export default function File({name, active = false}:fileType):ReactNode {
+export default function File({name, user, active = false, index}:fileType):ReactNode {
     // Defining react hook form
     const form = useForm<formType>({resolver: zodResolver(formSchema)})
 
     // Getting state of menu
     const {changeActive} = useFileMenu();
     const {remove, rename, files} = useFiles()
+
+    // Defining firebase
+    const firebase = useFirebase();
+    const firebaseFiles = useFirebaseFiles({user});
 
     // Defining a function to handle submit of rename file form
     const onSubmitHandler:SubmitHandler<formType> = ({fileName}) => {
@@ -39,6 +46,16 @@ export default function File({name, active = false}:fileType):ReactNode {
             rename(name, fileName);
             changeActive(fileName);
             toast('The file name is changed');
+
+            if (user.user) {
+                const firebaseNames = Object.keys(firebaseFiles);
+                const firebaseName = firebaseNames[index];
+
+                const db = getDatabase();
+                const dbRef = ref(db, `/${user.user.uid}/${firebaseName}/name`);
+
+                set(dbRef, fileName);
+            }
         }
     }
 
