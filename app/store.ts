@@ -59,7 +59,6 @@ export const useFiles = create<FilesStore>((set, get) => ({
             <ul>
                 <li><b>Efficient Note-Taking:</b> Quickly jot down your thoughts, ideas, and tasks.</li>
                 <li><b>Persistent Storage:</b> All notes are stored securely in Firebase and are accessible across devices.</li>
-                <li><b>Export Options:</b> Easily export your notes to Markdown (.md) or PDF (.pdf) formats.</li>
                 <li><b>Modern UI:</b> A sleek, responsive interface built with TailwindCSS.</li>
             </ul>
             <h2>Tech Stack</h2>
