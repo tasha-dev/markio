@@ -6,7 +6,6 @@ Markio is a lightweight, efficient note-taking app built with React, Next.js, an
 
 - **Efficient Note-Taking:** Quickly jot down your thoughts, ideas, and tasks.
 - **Persistent Storage:** All notes are stored securely in Firebase and are accessible across devices.
-- **Export Options:** Easily export your notes to Markdown (.md) or PDF (.pdf) formats.
 - **Modern UI:** A sleek, responsive interface built with TailwindCSS.
 
 ## Tech Stack
