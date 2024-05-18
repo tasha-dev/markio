@@ -8,12 +8,12 @@ import {BubbleMenu, EditorContent, useEditor} from "@tiptap/react";
 import {StarterKit} from "@tiptap/starter-kit";
 import {Link} from "@tiptap/extension-link";
 import Container from "@/components/ui/container";
-import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group";
+import {ToggleGroup} from "@/components/ui/toggle-group";
 import {Separator} from "@/components/ui/separator";
 import HoverDropDown from "@/components/ui/hoverDropdown";
 import {Button} from "@/components/ui/button";
 import {useFileMenu, useFiles} from "@/app/store";
-import {tiptapType} from "@/types";
+import {tipTapType} from "@/types";
 import {Placeholder} from "@tiptap/extension-placeholder";
 import {CharacterCount} from "@tiptap/extension-character-count";
 import Dropcursor from '@tiptap/extension-dropcursor'
@@ -29,12 +29,19 @@ import {
     List, CodeXml,
     Undo, Redo
 } from "lucide-react";
+import useFirebase from "@/hook/useFirebase";
+import useFirebaseFiles from "@/hook/useFirebaseFiles";
+import {getDatabase, ref, set} from "@firebase/database";
 
 // Creating and exporting tiptap component (editor) as default
-export default function Tiptap():ReactNode {
+export default function Tiptap({user}:tipTapType):ReactNode {
     // Getting data from zustand
     const {activeFile} = useFileMenu();
     const {files, setContent} = useFiles();
+
+    // Defining firebase
+    const app = useFirebase();
+    const firebaseFiles = useFirebaseFiles({user});
 
     // Defining editor
     const editor = useEditor({
@@ -50,12 +57,32 @@ export default function Tiptap():ReactNode {
             })
         ],
         content: files.find((item) => item.name === activeFile)?.content,
-        onUpdate: (e) => (editor?.getHTML()) ? setContent(activeFile, editor.getHTML()) : setContent(activeFile, '')
+        onUpdate: (e) => {
+            if (editor?.getHTML()) {
+                setContent(activeFile, editor.getHTML())
+
+                if (user.user) {
+                    const firebaseFilesValues = Object.values(firebaseFiles);
+                    const findedItem = firebaseFilesValues.find((item) => item.name === activeFile)
+                    const indexofFindedItem = (findedItem) ? firebaseFilesValues.indexOf(findedItem) : -1;
+                    const firebaseFilesObjectNames = Object.keys(firebaseFiles);
+                    const findedObjectName = firebaseFilesObjectNames[indexofFindedItem];
+
+                    const db = getDatabase();
+                    const dbRef = ref(db, `/${user.user.uid}/${findedObjectName}/content`);
+
+                    set(dbRef, editor.getHTML());
+                }
+            } else {
+                setContent(activeFile, '');
+            }
+        }
     })
 
     useEffect(() => {
         const val = files.find((item) => item.name === activeFile)?.content;
-        (val) ? editor?.commands.setContent(val) : editor?.commands.setContent('<h1>Not Found</h1>')
+        if (val) {editor?.commands.setContent(val)}
+        else {editor?.commands.setContent('<h1>Not Found</h1>')}
     }, [files, activeFile]);
 
     // Conditional rendering

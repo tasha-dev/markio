@@ -42,7 +42,7 @@ export default function Layout():ReactNode {
             <div className={'lg:grid grid-cols-4 h-[calc(100%-2.5rem)]'}>
                 <FileMenu user={user} />
                 <div className={'backdrop-blur-2xl col-span-3 overflow-auto custom-scroll h-full'}>
-                    <Tiptap />
+                    <Tiptap user={user} />
                 </div>
             </div>
         </div>
