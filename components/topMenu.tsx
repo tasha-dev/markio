@@ -18,6 +18,7 @@ import {Input} from "@/components/ui/input";
 import {topMenuType} from "@/types";
 import {getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword} from 'firebase/auth';
 import useFirebase from "@/hook/useFirebase";
+import Find from '@/components/find';
 
 // Defining types and schemas of forms
 const loginFormSchema = z.object({
@@ -199,6 +200,7 @@ export default function TopMenu({user}:topMenuType):ReactNode {
                             </MenubarMenu>
                         )
             }
+            <Find />
             <Button
                 onClick={changeTheme}
                 size={'icon'}
