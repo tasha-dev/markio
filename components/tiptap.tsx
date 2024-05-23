@@ -57,9 +57,10 @@ export default function Tiptap({user}:tipTapType):ReactNode {
             })
         ],
         content: files.find((item) => item.name === activeFile)?.content,
-        onUpdate: (e) => {
-            if (editor?.getHTML()) {
-                setContent(activeFile, editor.getHTML())
+        onBlur: () => {
+            const content = editor?.getHTML();
+            if (content) {
+                setContent(activeFile, content);
 
                 if (user.user) {
                     const firebaseFilesValues = Object.values(firebaseFiles);
@@ -71,12 +72,10 @@ export default function Tiptap({user}:tipTapType):ReactNode {
                     const db = getDatabase();
                     const dbRef = ref(db, `/${user.user.uid}/${findedObjectName}/content`);
 
-                    set(dbRef, editor.getHTML());
+                    set(dbRef, content);
                 }
-            } else {
-                setContent(activeFile, '');
             }
-        }
+      }
     })
 
     useEffect(() => {
