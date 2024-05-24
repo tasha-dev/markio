@@ -17,6 +17,8 @@ import {tipTapType} from "@/types";
 import {Placeholder} from "@tiptap/extension-placeholder";
 import {CharacterCount} from "@tiptap/extension-character-count";
 import Dropcursor from '@tiptap/extension-dropcursor'
+import TaskItem from '@tiptap/extension-task-item';
+import TaskList from '@tiptap/extension-task-list';
 import {
     Bold,
     Italic,
@@ -54,6 +56,10 @@ export default function Tiptap({user}:tipTapType):ReactNode {
                 placeholder: 'Write something ...',
                 showOnlyWhenEditable: true,
                 considerAnyAsEmpty: true
+            }),
+            TaskList,
+            TaskItem.configure({
+              nested: true
             })
         ],
         content: files.find((item) => item.name === activeFile)?.content,
