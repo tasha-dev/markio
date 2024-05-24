@@ -95,8 +95,9 @@
         margin-top: 1rem;
     }
 
+    .is-editor-empty:first-child::before {color: rgba(0,0,0,.5);}
+    .dark .is-editor-empty:first-child::before {color: rgba(256,256,256,.5);}
     .editor .is-editor-empty:first-child::before {
-        color: rgba(0,0,0,.5);
         content: attr(data-placeholder);
         float: left;
         height: 0;

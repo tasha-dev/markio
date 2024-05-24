@@ -52,15 +52,13 @@ export default function Tiptap({user}:tipTapType):ReactNode {
             CharacterCount,
             Link,
             Dropcursor,
+            TaskList,
+            TaskItem.configure({nested: true}),
             Placeholder.configure({
                 placeholder: 'Write something ...',
                 showOnlyWhenEditable: true,
                 considerAnyAsEmpty: true
             }),
-            TaskList,
-            TaskItem.configure({
-              nested: true
-            })
         ],
         content: files.find((item) => item.name === activeFile)?.content,
         onBlur: () => {
