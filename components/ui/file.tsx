@@ -88,6 +88,7 @@ export default function File({name, user, active = false, index}:fileType):React
                                         const dbRef = ref(db, `/${user.user.uid}/${firebaseName}`);
 
                                         set(dbRef, {});
+                                        changeActive(files[0].name);
                                     }
                                 }}
                                 className={'h-[36px] w-[36px] aspect-square flex items-center justify-center transition-all duration-500 bg-transparent text-red-600 hover:bg-red-600 hover:text-white'}

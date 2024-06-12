@@ -12,7 +12,7 @@ import {ToggleGroup} from "@/components/ui/toggle-group";
 import {Separator} from "@/components/ui/separator";
 import HoverDropDown from "@/components/ui/hoverDropdown";
 import {Button} from "@/components/ui/button";
-import {useFileMenu, useFiles} from "@/app/store";
+import {useEditorStore, useFileMenu, useFiles} from "@/app/store";
 import {tipTapType} from "@/types";
 import {Placeholder} from "@tiptap/extension-placeholder";
 import {CharacterCount} from "@tiptap/extension-character-count";
@@ -33,13 +33,13 @@ import {
 } from "lucide-react";
 import useFirebase from "@/hook/useFirebase";
 import useFirebaseFiles from "@/hook/useFirebaseFiles";
-import {getDatabase, ref, set} from "@firebase/database";
 
 // Creating and exporting tiptap component (editor) as default
 export default function Tiptap({user, content}:tipTapType):ReactNode {
     // Getting data from zustand
     const {activeFile} = useFileMenu();
     const {files, setContent} = useFiles();
+    const useEditorContentStore = useEditorStore();
 
     // Defining firebase
     const app = useFirebase();
@@ -62,24 +62,13 @@ export default function Tiptap({user, content}:tipTapType):ReactNode {
         ],
         content: content,
         onDestroy: () => {
-            const content = editor?.getHTML();
-            if (content) {
-                setContent(activeFile, content);
-
-                if (user.user) {
-                    const firebaseFilesValues = Object.values(firebaseFiles);
-                    const findedItem = firebaseFilesValues.find((item) => item.name === activeFile)
-                    const indexofFindedItem = (findedItem) ? firebaseFilesValues.indexOf(findedItem) : -1;
-                    const firebaseFilesObjectNames = Object.keys(firebaseFiles);
-                    const findedObjectName = firebaseFilesObjectNames[indexofFindedItem];
-
-                    const db = getDatabase();
-                    const dbRef = ref(db, `/${user.user.uid}/${findedObjectName}/content`);
-
-                    set(dbRef, content);
-                }
-            }
-      }
+          const content = editor?.getHTML();
+          if (content && activeFile) {setContent(activeFile, content);}
+        },
+        onBlur: () => {
+            const editorContent = editor?.getHTML();
+            if (editorContent) {useEditorContentStore.setContent(editorContent)}
+        }
     })
 
     useEffect(() => {
@@ -142,11 +131,11 @@ export default function Tiptap({user, content}:tipTapType):ReactNode {
                                 <Italic className="h-4 w-4"/>
                             </Button>
                             <Button variant={'ghost'} size={'icon'} onClick={() => editor.chain().focus().toggleStrike().run()}
-                                             value="underline" aria-label="Toggle underline">
+                                             value="underline" aria-label="Togglelinethrough">
                                 <Strikethrough className="h-4 w-4"/>
                             </Button>
                             <Button variant={'ghost'} size={'icon'} onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-                                             value="underline" aria-label="Toggle underline">
+                                             value="underline" aria-label="Toggle code block">
                                 <CodeXml className="h-4 w-4"/>
                             </Button>
                             <Separator orientation={'vertical'}/>

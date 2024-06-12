@@ -3,11 +3,11 @@
 'use client';
 
 // Importing part
-import {ReactNode, useEffect} from "react";
+import {ReactNode, useEffect, useState} from "react";
 import {Menubar, MenubarMenu} from "@/components/ui/menubar"
 import {Button} from "@/components/ui/button";
 import {Sun, Moon, AlignJustify, LoaderCircle} from "lucide-react";
-import {useFileMenu, useTheme} from "@/app/store";
+import {useEditorStore, useFileMenu, useTheme} from "@/app/store";
 import {Tabs, TabsContent, TabsList, TabsTrigger,} from "@/components/ui/tabs"
 import {Dialog, DialogContent, DialogTrigger} from "@/components/ui/dialog";
 import z from 'zod';
@@ -19,6 +19,9 @@ import {topMenuType} from "@/types";
 import {getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword} from 'firebase/auth';
 import useFirebase from "@/hook/useFirebase";
 import Find from '@/components/find';
+import {getDatabase, set, ref} from 'firebase/database';
+import useFirebaseFiles from "@/hook/useFirebaseFiles";
+import {toast} from 'sonner';
 
 // Defining types and schemas of forms
 const loginFormSchema = z.object({
@@ -39,7 +42,13 @@ type signupFormType = z.infer<typeof signupFormSchema>;
 export default function TopMenu({user}:topMenuType):ReactNode {
     // Defining states of component
     const {theme, changeTheme} = useTheme();
-    const {changeOpen} = useFileMenu();
+    const {changeOpen, activeFile} = useFileMenu();
+    const {content} = useEditorStore();
+    const [isSaving, setSaving] = useState<boolean>(false);
+
+    // Defining firebase
+    const firebase = useFirebase();
+    const firebaseFiles = useFirebaseFiles({user});
 
     // Defining form hook
     const loginForm = useForm<loginFormType>({resolver: zodResolver(loginFormSchema)})
@@ -52,9 +61,6 @@ export default function TopMenu({user}:topMenuType):ReactNode {
             ? htmlElement.classList.add('dark')
             : htmlElement.classList.remove('dark')
     }, [theme]);
-
-    // Defining firebase
-    const firebase = useFirebase();
 
     // Handling submit events
     const loginFormSubmit:SubmitHandler<loginFormType> = async ({email, password}) => {
@@ -116,7 +122,7 @@ export default function TopMenu({user}:topMenuType):ReactNode {
                                                             <FormItem>
                                                                 <FormLabel>Login</FormLabel>
                                                                 <FormControl>
-                                                                    <Input placeholder={"johndoe@gmail.com"} {...field} />
+                                                                    <Input type="email" placeholder={"johndoe@gmail.com"} {...field} />
                                                                 </FormControl>
                                                                 <FormMessage />
                                                             </FormItem>
@@ -125,7 +131,7 @@ export default function TopMenu({user}:topMenuType):ReactNode {
                                                             <FormItem>
                                                                 <FormLabel>Password</FormLabel>
                                                                 <FormControl>
-                                                                    <Input placeholder={"12345678"} {...field} />
+                                                                    <Input type="password" placeholder={"12345678"} {...field} />
                                                                 </FormControl>
                                                                 <FormMessage />
                                                             </FormItem>
@@ -221,6 +227,46 @@ export default function TopMenu({user}:topMenuType):ReactNode {
             >
                 <AlignJustify className={'w-4 h-4'} color={'currentColor'} />
             </Button>
+            {
+              (user.loading || isSaving)
+                ? (
+                      <Button 
+                        variant="ghost"
+                        className={'h-[2rem] flex items-center justify-center'}
+                      >
+                        <LoaderCircle className={'w-4 h-4 text-white animate-spin'} />
+                      </Button>
+                  )
+                : (!user.user || activeFile === undefined)
+                    ? false
+                    : (
+                      <Button
+                        variant={'ghost'}
+                        className="h-[2rem]"  
+                        onClick={() => {
+                          setSaving(true);
+                          console.log(content);
+                          const firebaseFilesValues = Object.values(firebaseFiles);
+                          const findedItem = firebaseFilesValues.find((item) => item.name === activeFile)
+                          const indexofFindedItem = (findedItem) ? firebaseFilesValues.indexOf(findedItem) : -2;
+                          const firebaseFilesObjectNames = Object.keys(firebaseFiles);
+                          const findedObjectName = firebaseFilesObjectNames[indexofFindedItem];
+
+                          const db = getDatabase();
+                          const dbRef = ref(db, `/${user.user?.uid}/${findedObjectName}/content`);
+
+                          
+                          set(dbRef, content);
+                          setTimeout(() => {
+                            setSaving(false);
+                            toast('The note is saved now')
+                          }, 2000)
+                        }}
+                      >
+                        Save
+                      </Button>
+                    )
+            } 
         </Menubar>
     );
 }

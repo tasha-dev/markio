@@ -11,7 +11,7 @@ type themeStoreType = {
 type fileMenuStoreType = {
     opened: boolean;
     changeOpen: () => void;
-    activeFile: string;
+    activeFile?: string;
     changeActive: (name:string) => void;
 }
 
@@ -19,6 +19,11 @@ type File = {
     name: string;
     content: string;
 };
+
+type editorStore = {
+  content: string;
+  setContent: (value:string) => void;
+}
 
 // Define the type for the useFirebaseFiles store
 type FilesStore = {
@@ -40,7 +45,7 @@ export const useTheme = create<themeStoreType>()((set) => ({
 
 export const useFileMenu = create<fileMenuStoreType>()((set) => ({
     opened: false,
-    activeFile: 'Welcome',
+    activeFile: undefined,
     changeOpen: () => set((state) => ({
         opened: !state.opened
     })),
@@ -83,3 +88,12 @@ export const useFiles = create<FilesStore>((set, get) => ({
         }))
     }
 }));
+
+export const useEditorStore = create<editorStore>((set) => ({
+  content: '',
+  setContent: (value) => {
+    set(() => ({
+      content: value
+    }))
+  }
+}))
