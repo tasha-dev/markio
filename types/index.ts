@@ -9,7 +9,12 @@ export interface userType {loading: boolean;user: User | null;}
 export interface topMenuType {user: userType}
 export interface fileMenuType {user: userType}
 export interface useFilesType {user: userType;}
-export interface tipTapType {user: userType;}
+
+export interface tipTapType {
+  user: userType;
+  content: string;
+}
+
 export interface fileType {
     name: string;
     content: string;

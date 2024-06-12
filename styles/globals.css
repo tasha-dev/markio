@@ -72,6 +72,7 @@
     .custom-scroll::-webkit-scrollbar-thumb {@apply dark:bg-white/20 bg-black/20 rounded-[50rem] dark:hover:bg-white/50 hover:bg-black/20}
 
     .editor .ProseMirror * {white-space: pre-wrap;word-wrap: break-word;}
+    .editor hr {@apply dark:border-white border-black}
     .editor h1 {@apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;}
     .editor h2 {@apply scroll-m-20 border-b dark:border-b-white border-b-black pb-2 text-3xl font-semibold tracking-tight first:mt-0;}
     .editor h3 {@apply scroll-m-20 text-2xl font-semibold tracking-tight;}

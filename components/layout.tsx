@@ -9,13 +9,14 @@ import FileMenu from "@/components/fileMenu";
 import Tiptap from "@/components/tiptap";
 import useFirebase from "@/hook/useFirebase";
 import useUser from "@/hook/useUser";
-import {useFiles} from "@/app/store";
+import {useFileMenu, useFiles} from "@/app/store";
 import {getDatabase, onValue, ref} from "@firebase/database";
 
 // Creating and exporting layout component as default
 export default function Layout():ReactNode {
     // Defining zustand
-    const {setFiles} = useFiles();
+    const {setFiles, files} = useFiles();
+    const {activeFile} = useFileMenu()
 
     // Defining firebase
     const app = useFirebase();
@@ -42,7 +43,13 @@ export default function Layout():ReactNode {
             <div className={'lg:grid grid-cols-4 h-[calc(100%-2.5rem)]'}>
                 <FileMenu user={user} />
                 <div className={'backdrop-blur-2xl col-span-3 overflow-auto custom-scroll h-full'}>
-                    <Tiptap user={user} />
+                    {
+                        files.map((item, index) => (
+                            (activeFile === item.name) 
+                                ? <Tiptap key={index} user={user} content={item.content} />
+                                : false
+                        ))
+                    }
                 </div>
             </div>
         </div>

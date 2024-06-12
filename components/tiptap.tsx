@@ -36,7 +36,7 @@ import useFirebaseFiles from "@/hook/useFirebaseFiles";
 import {getDatabase, ref, set} from "@firebase/database";
 
 // Creating and exporting tiptap component (editor) as default
-export default function Tiptap({user}:tipTapType):ReactNode {
+export default function Tiptap({user, content}:tipTapType):ReactNode {
     // Getting data from zustand
     const {activeFile} = useFileMenu();
     const {files, setContent} = useFiles();
@@ -60,8 +60,8 @@ export default function Tiptap({user}:tipTapType):ReactNode {
                 considerAnyAsEmpty: true
             }),
         ],
-        content: files.find((item) => item.name === activeFile)?.content,
-        onBlur: () => {
+        content: content,
+        onDestroy: () => {
             const content = editor?.getHTML();
             if (content) {
                 setContent(activeFile, content);
