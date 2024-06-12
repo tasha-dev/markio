@@ -234,7 +234,7 @@ export default function TopMenu({user}:topMenuType):ReactNode {
                         variant="ghost"
                         className={'h-[2rem] flex items-center justify-center'}
                       >
-                        <LoaderCircle className={'w-4 h-4 text-white animate-spin'} />
+                        <LoaderCircle className={'w-4 h-4 animate-spin'} />
                       </Button>
                   )
                 : (!user.user || activeFile === undefined)
