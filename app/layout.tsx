@@ -6,6 +6,8 @@ import { JSX } from "react";
 import { Inter } from "next/font/google";
 import "@/style/globals.css";
 import { cn } from "@/lib/util";
+import { ThemeProvider } from "next-themes";
+import { Toaster } from "@/component/ui/sonner";
 
 // Defining metadata
 export const metadata: Metadata = {
@@ -68,14 +70,17 @@ const interFont = Inter({
 export default function RootLayout({ children }: RootLayoutProps): JSX.Element {
   // Returning JSX
   return (
-    <html suppressHydrationWarning>
+    <html suppressHydrationWarning lang="en">
       <body
         className={cn(
           "bg-background text-foreground overflow-x-hidden overflow-y-auto",
           interFont.className,
         )}
       >
-        {children}
+        <ThemeProvider>
+          <Toaster position="top-center" />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
