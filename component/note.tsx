@@ -8,7 +8,7 @@ import { NoteProps } from "@/type/component";
 import { NoteType } from "@/type/general";
 import { X } from "lucide-react";
 import moment from "moment";
-import { JSX, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import useLocalStorageState from "use-local-storage-state";
 import {
   Drawer,
@@ -27,6 +27,18 @@ export default function Note({ data, className }: NoteProps): JSX.Element {
   // Defining hooks
   const [deleteDrawerOpened, setDeleteDrawerOpened] = useState<boolean>(false);
   const [notes, setNotes] = useLocalStorageState<NoteType[]>("notes");
+  const [dateLabel, setDateLabel] = useState<string>(
+    moment(data.createdAt).fromNow(),
+  );
+
+  // using useEffect to set dateLabel state and update it each 5000 ms (5 seconds)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDateLabel(moment(data.createdAt).fromNow());
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [data.createdAt]);
 
   // Returning JSX
   return (
@@ -43,7 +55,7 @@ export default function Note({ data, className }: NoteProps): JSX.Element {
       </div>
       <div className="shrink-0 flex items-center justify-between gap-3 mt-1.5">
         <span className="text-right text-xs text-foreground/70 block font-light">
-          {moment(data.createdAt).fromNow()}
+          {dateLabel}
         </span>
         <Drawer open={deleteDrawerOpened} onOpenChange={setDeleteDrawerOpened}>
           <DrawerTrigger asChild>
