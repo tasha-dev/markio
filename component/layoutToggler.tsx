@@ -33,7 +33,7 @@ export default function LayoutToggler(): ReactNode {
             <GalleryHorizontal />
           </Button>
         </TooltipTrigger>
-        <TooltipContent></TooltipContent>
+        <TooltipContent>Toogle layout size</TooltipContent>
       </Tooltip>
     );
   }

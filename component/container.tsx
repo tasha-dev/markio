@@ -21,7 +21,7 @@ export default function Container({
   return (
     <div
       className={cn(
-        "transition-all duration-500 mx-auto p-5",
+        "transition-all  duration-500 mx-auto p-5",
         layout === "sm" ? "lg:max-w-3xl w-full" : "w-full max-w-full",
         className,
       )}

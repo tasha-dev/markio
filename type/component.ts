@@ -15,3 +15,7 @@ export interface ContainerProps {
   className?: string;
   children: ReactNode;
 }
+
+export interface NoteCreatorProps {
+  className?: string;
+}
