@@ -5,3 +5,8 @@ export interface NoteType {
   message: string;
   id: number;
 }
+
+export interface GroupedNotes {
+  date: string;
+  data: NoteType[];
+}
