@@ -6,5 +6,11 @@ import { JSX } from "react";
 // Creating and exporting Home page as default
 export default function HomePage(): JSX.Element {
   // Returning JSX
-  return <Container>HI</Container>;
+  return (
+    <Container>
+      <div className="space-y-4">
+        <h1>HI</h1>
+      </div>
+    </Container>
+  );
 }

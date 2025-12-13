@@ -21,11 +21,13 @@ export default function Container({
   return (
     <div
       className={cn(
-        layout === "sm" ? "mx-auto max-w-3xl pt-6 p-3" : "w-full p-5",
+        layout === "sm"
+          ? "mx-auto lg:max-w-3xl lg:pt-6 lg:p-3 pt-5 p-5"
+          : "w-full p-5",
         className,
       )}
     >
-      <Header />
+      <Header className="mb-10" />
       {children}
     </div>
   );

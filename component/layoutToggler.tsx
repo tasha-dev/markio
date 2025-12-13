@@ -3,32 +3,36 @@
 "use client";
 
 // Importing part
-import { JSX } from "react";
+import { ReactNode } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { Button } from "./ui/button";
 import { GalleryHorizontal } from "lucide-react";
 import useLocalStorageState from "use-local-storage-state";
+import { useMediaQuery } from "@/hook/useMediaQuery";
 
 // Creating and exporting LayoutToggler component as default
-export default function LayoutToggler(): JSX.Element {
+export default function LayoutToggler(): ReactNode {
   // Defining hooks
+  const isLg = useMediaQuery("(min-width: 1024px)");
   const [layout, setLayout] = useLocalStorageState<"sm" | "lg">("layout");
 
   // Returning JSX
-  return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Button
-          variant="ghost"
-          size={"icon-lg"}
-          onClick={() => {
-            setLayout((prev) => (prev === "sm" ? "lg" : "sm"));
-          }}
-        >
-          <GalleryHorizontal />
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent>Toggle Layout</TooltipContent>
-    </Tooltip>
-  );
+  if (isLg) {
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="ghost"
+            size={"icon-lg"}
+            onClick={() => {
+              setLayout((prev) => (prev === "sm" ? "lg" : "sm"));
+            }}
+          >
+            <GalleryHorizontal />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent></TooltipContent>
+      </Tooltip>
+    );
+  }
 }
