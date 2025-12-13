@@ -3,6 +3,7 @@
 import { RootLayoutProps } from "@/type/component";
 import { Metadata } from "next";
 import { JSX } from "react";
+import "@/style/globals.css";
 
 // Defining metadata
 export const metadata: Metadata = {
