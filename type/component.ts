@@ -1,6 +1,7 @@
 // Codes by mahdi tasha
 // Importing part
 import { ReactNode } from "react";
+import { NoteType } from "./general";
 
 // Creating and exporting the of props of components
 export interface RootLayoutProps {
@@ -18,4 +19,9 @@ export interface ContainerProps {
 
 export interface NoteCreatorProps {
   className?: string;
+}
+
+export interface NoteProps {
+  className?: string;
+  data: NoteType;
 }

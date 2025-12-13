@@ -31,12 +31,14 @@ export default function NoteCreator({
       toast.error("Check your input .");
     } else {
       const notesCopy = notes ? [...notes] : [];
+      const lastItemInCopy =
+        notesCopy.length === 0 ? 0 : notesCopy[notesCopy.length - 1].id;
 
       setNotes([
         ...notesCopy,
         {
           createdAt: new Date().toISOString(),
-          id: notesCopy.length + 1,
+          id: lastItemInCopy + 1,
           message: inputValue,
         },
       ]);
