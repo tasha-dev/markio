@@ -14,7 +14,7 @@ import { useMediaQuery } from "@/hook/useMediaQuery";
 export default function LayoutToggler(): ReactNode {
   // Defining hooks
   const isLg = useMediaQuery("(min-width: 1024px)");
-  const [layout, setLayout] = useLocalStorageState<"sm" | "lg">("layout", {
+  const [, setLayout] = useLocalStorageState<"sm" | "lg">("layout", {
     defaultValue: "sm",
   });
 

@@ -8,7 +8,7 @@ import { NoteProps } from "@/type/component";
 import { NoteType } from "@/type/general";
 import { X } from "lucide-react";
 import moment from "moment";
-import { JSX, useEffect, useState } from "react";
+import { JSX, useMemo, useState } from "react";
 import useLocalStorageState from "use-local-storage-state";
 import {
   Drawer,
@@ -31,11 +31,11 @@ export default function Note({ data, className }: NoteProps): JSX.Element {
     moment(data.createdAt).fromNow(),
   );
 
-  // using useEffect to set dateLabel state and update it each 5000 ms (5 seconds)
-  useEffect(() => {
+  // using useMemo to set dateLabel state and update it each 5000 ms (5 seconds)
+  useMemo(() => {
     const interval = setInterval(() => {
       setDateLabel(moment(data.createdAt).fromNow());
-    }, 5000);
+    }, 60000);
 
     return () => clearInterval(interval);
   }, [data.createdAt]);
